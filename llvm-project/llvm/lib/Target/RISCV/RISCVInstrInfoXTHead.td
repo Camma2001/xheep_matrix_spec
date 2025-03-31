@@ -978,7 +978,7 @@ class RVMArith<bits<5> funct5_h, bits<5> funct5_l, dag outs, dag ins,
   let Inst{20-18} = ms1;
 }
 
-class RVMLoadStore<bits<5> funct5_h, bits<2> size, dag outs, dag ins,
+class RVMLoadStore<bits<5> funct5_h, bits<2> ldst, bits<2> size, dag outs, dag ins,
                   string opcodestr, string argstr>
     : RVInst<outs, ins, opcodestr, argstr, [], InstFormatOther> {
   bits<5> rs2;
@@ -986,7 +986,7 @@ class RVMLoadStore<bits<5> funct5_h, bits<2> size, dag outs, dag ins,
   bits<3> mds3;
 
   let Inst{31-27} = funct5_h;
-  let Inst{26-25} = 0b10;
+  let Inst{26-25} = ldst;
   let Inst{24-20} = rs2;
   let Inst{19-15} = rs1;
   let Inst{11-10} = size;
@@ -1016,11 +1016,11 @@ let Predicates = [HasVendorXTHeadMatrix], hasSideEffects = 0, mayLoad = 0, maySt
   def MZERO : RVMArithBase<0b11111, 0b00000, (outs MR:$md), (ins), "mzero", "$md">;
 
   let mayLoad = 1 in {
-    def MLD_W : RVMLoadStore<0b00000, 0b10, (outs MR:$mds3), (ins GPR:$rs1, GPR:$rs2), "mld.w", "$mds3, (${rs1}), $rs2">;
+    def MLD_W : RVMLoadStore<0b00000, 0b00, 0b10, (outs MR:$mds3), (ins GPR:$rs1, GPR:$rs2), "mld.w", "$mds3, (${rs1}), $rs2">;
   }
 
   let mayStore = 1 in {
-    def MST_W : RVMLoadStore<0b00001, 0b10, (outs), (ins MR:$mds3, GPR:$rs1, GPR:$rs2), "mst.w", "$mds3, (${rs1}), $rs2">;
+    def MST_W : RVMLoadStore<0b00001, 0b10, 0b10, (outs), (ins MR:$mds3, GPR:$rs1, GPR:$rs2), "mst.w", "$mds3, (${rs1}), $rs2">;
   }
 
   let hasSideEffects = 1, usesCustomInserter = 1 in {
