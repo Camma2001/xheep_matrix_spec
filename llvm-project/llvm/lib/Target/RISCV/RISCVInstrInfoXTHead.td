@@ -1009,6 +1009,8 @@ let Predicates = [HasVendorXTHeadMatrix], hasSideEffects = 0, mayLoad = 0, maySt
   let hasSideEffects = 1 in {
     def MCFG : RVMConfig<0b11111, (ins GPR:$rs1), "mcfg">;
   }
+  def FMMACC_B : RVMArith<0b00001, 0b00000, (outs MR:$md), (ins MR:$ms1, MR:$ms2), "fmmacc.b", "$md, $ms2, $ms1">;
+  def FMMACC_H : RVMArith<0b00001, 0b01000, (outs MR:$md), (ins MR:$ms1, MR:$ms2), "fmmacc.h", "$md, $ms2, $ms1">;
   def FMMACC_S : RVMArith<0b00001, 0b10000, (outs MR:$md), (ins MR:$ms1, MR:$ms2), "fmmacc.s", "$md, $ms2, $ms1">;
   def MMAQA_B  : RVMArith<0b00010, 0b00000, (outs MR:$md), (ins MR:$ms1, MR:$ms2), "mmaqa.b" , "$md, $ms2, $ms1">;
   def MMADA_H  : RVMArith<0b11100, 0b01000, (outs MR:$md), (ins MR:$ms1, MR:$ms2), "mmada.h" , "$md, $ms2, $ms1">;
